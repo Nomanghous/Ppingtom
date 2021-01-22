@@ -214,8 +214,7 @@
 
 <script>
     Dropzone.options.photoDropzone = {
-        url: '{{ route('
-        admin.products.storeMedia ') }}',
+        url: '{{ route('admin.products.storeMedia') }}',
         maxFilesize: 2, // MB
         acceptedFiles: '.jpeg,.jpg,.png,.gif',
         maxFiles: 1,
@@ -240,9 +239,9 @@
             }
         },
         init: function() {
-            @if(isset($product) && $product - > photo)
+            @if(isset($product) && $product -> photo)
             var file = {
-                !!json_encode($product - > photo) !!
+                !!json_encode($product -> photo) !!
             }
             this.options.addedfile.call(this, file)
             this.options.thumbnail.call(this, file, file.preview)
@@ -271,8 +270,7 @@
 </script>
 <script>
     Dropzone.options.mediaAssetDropzone = {
-        url: '{{ route('
-        admin.products.storeMedia ') }}',
+        url: '{{ route('admin.products.storeMedia') }}',
         maxFilesize: 100, // MB
         maxFiles: 1,
         addRemoveLinks: true,
@@ -294,9 +292,9 @@
             }
         },
         init: function() {
-            @if(isset($product) && $product - > media_asset)
+            @if(isset($product) && $product -> media_asset)
             var file = {
-                !!json_encode($product - > media_asset) !!
+                !!json_encode($product -> media_asset) !!
             }
             this.options.addedfile.call(this, file)
             file.previewElement.classList.add('dz-complete')

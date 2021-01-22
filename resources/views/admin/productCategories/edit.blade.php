@@ -57,8 +57,8 @@
 @section('scripts')
 <script>
     Dropzone.options.photoDropzone = {
-        url: '{{ route('
-        admin.product - categories.storeMedia ') }}',
+        
+        url: '{{ route('admin.product-categories.storeMedia') }}',
         maxFilesize: 2, // MB
         acceptedFiles: '.jpeg,.jpg,.png,.gif',
         maxFiles: 1,
@@ -83,9 +83,9 @@
             }
         },
         init: function() {
-            @if(isset($productCategory) && $productCategory - > photo)
+            @if(isset($productCategory) && $productCategory -> photo)
             var file = {
-                !!json_encode($productCategory - > photo) !!
+                !!json_encode($productCategory -> photo) !!
             }
             this.options.addedfile.call(this, file)
             this.options.thumbnail.call(this, file, file.preview)

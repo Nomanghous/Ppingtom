@@ -146,7 +146,7 @@
         let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
         @can('product_delete')
         let deleteButtonTrans = '{{ trans('
-        global.datatables.delete ') }}'
+        global.datatables.delete') }}'
         let deleteButton = {
             text: deleteButtonTrans,
             url: "{{ route('admin.products.massDestroy') }}",
@@ -160,13 +160,13 @@
 
                 if (ids.length === 0) {
                     alert('{{ trans('
-                        global.datatables.zero_selected ') }}')
+                        global.datatables.zero_selected') }}')
 
                     return
                 }
 
                 if (confirm('{{ trans('
-                        global.areYouSure ') }}')) {
+                        global.areYouSure') }}')) {
                     $.ajax({
                             headers: {
                                 'x-csrf-token': _token
