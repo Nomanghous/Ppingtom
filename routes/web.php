@@ -49,6 +49,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Sub Categories
     Route::delete('sub-categories/destroy', 'SubCategoriesController@massDestroy')->name('sub-categories.massDestroy');
+    Route::get('sub-categories/getById', 'SubCategoriesController@getById')->name('sub-categories.getById');
     Route::resource('sub-categories', 'SubCategoriesController');
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {

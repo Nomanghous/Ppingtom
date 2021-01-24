@@ -45,7 +45,7 @@
                         </th>
                         <td>
                             @foreach($product->categories as $key => $category)
-                            <span class="label label-info">{{ $category->name }}</span>
+                                <span class="label label-info">{{ $category->name }}</span>
                             @endforeach
                         </td>
                     </tr>
@@ -55,7 +55,7 @@
                         </th>
                         <td>
                             @foreach($product->tags as $key => $tag)
-                            <span class="label label-info">{{ $tag->name }}</span>
+                                <span class="label label-info">{{ $tag->name }}</span>
                             @endforeach
                         </td>
                     </tr>
@@ -65,9 +65,9 @@
                         </th>
                         <td>
                             @if($product->photo)
-                            <a href="{{ $product->photo->getUrl() }}" target="_blank" style="display: inline-block">
-                                <img src="{{ $product->photo->getUrl('thumb') }}">
-                            </a>
+                                <a href="{{ $product->photo->getUrl() }}" target="_blank" style="display: inline-block">
+                                    <img src="{{ $product->photo->getUrl('thumb') }}">
+                                </a>
                             @endif
                         </td>
                     </tr>
@@ -77,9 +77,9 @@
                         </th>
                         <td>
                             @if($product->media_asset)
-                            <a href="{{ $product->media_asset->getUrl() }}" target="_blank">
-                                {{ trans('global.view_file') }}
-                            </a>
+                                <a href="{{ $product->media_asset->getUrl() }}" target="_blank">
+                                    {{ trans('global.view_file') }}
+                                </a>
                             @endif
                         </td>
                     </tr>
@@ -113,6 +113,14 @@
                         </th>
                         <td>
                             {{ $product->longitude }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.product.fields.user') }}
+                        </th>
+                        <td>
+                            {{ $product->user->name ?? '' }}
                         </td>
                     </tr>
                 </tbody>

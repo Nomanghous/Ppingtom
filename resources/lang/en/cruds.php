@@ -137,6 +137,8 @@ return [
             'latitdue_helper'    => ' ',
             'longitude'          => 'Longitude',
             'longitude_helper'   => ' ',
+            'user'               => 'User',
+            'user_helper'        => ' ',
         ],
     ],
     'mainCategory'      => [

@@ -34,6 +34,7 @@ class Product extends Model implements HasMedia
         'country',
         'latitdue',
         'longitude',
+        'user_id',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -76,5 +77,10 @@ class Product extends Model implements HasMedia
     public function getMediaAssetAttribute()
     {
         return $this->getMedia('media_asset')->last();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

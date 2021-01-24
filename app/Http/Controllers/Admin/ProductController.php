@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductTag;
+use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -23,7 +24,7 @@ class ProductController extends Controller
     {
         abort_if(Gate::denies('product_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $products = Product::with(['categories', 'tags', 'media'])->get();
+        $products = Product::with(['categories', 'tags', 'user', 'media'])->get();
 
         return view('admin.products.index', compact('products'));
     }
@@ -36,11 +37,14 @@ class ProductController extends Controller
 
         $tags = ProductTag::all()->pluck('name', 'id');
 
-        return view('admin.products.create', compact('categories', 'tags'));
+        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        return view('admin.products.create', compact('categories', 'tags', 'users'));
     }
 
     public function store(StoreProductRequest $request)
     {
+        
         $product = Product::create($request->all());
         $product->categories()->sync($request->input('categories', []));
         $product->tags()->sync($request->input('tags', []));
@@ -68,9 +72,11 @@ class ProductController extends Controller
 
         $tags = ProductTag::all()->pluck('name', 'id');
 
-        $product->load('categories', 'tags');
+        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.products.edit', compact('categories', 'tags', 'product'));
+        $product->load('categories', 'tags', 'user');
+
+        return view('admin.products.edit', compact('categories', 'tags', 'users', 'product'));
     }
 
     public function update(UpdateProductRequest $request, Product $product)
@@ -110,7 +116,7 @@ class ProductController extends Controller
     {
         abort_if(Gate::denies('product_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $product->load('categories', 'tags');
+        $product->load('categories', 'tags', 'user');
 
         return view('admin.products.show', compact('product'));
     }

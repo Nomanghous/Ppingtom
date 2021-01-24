@@ -72,7 +72,7 @@ class User extends Authenticatable
     {
         $this->notify(new ResetPassword($token));
     }
-
+    
     public function roles()
     {
         return $this->belongsToMany(Role::class);

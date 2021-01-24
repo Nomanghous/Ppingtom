@@ -66,6 +66,8 @@ class SubCategoriesController extends Controller
         return view('admin.subCategories.show', compact('subCategory'));
     }
 
+    
+
     public function destroy(SubCategory $subCategory)
     {
         abort_if(Gate::denies('sub_category_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');

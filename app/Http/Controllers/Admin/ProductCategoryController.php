@@ -90,6 +90,8 @@ class ProductCategoryController extends Controller
         return back();
     }
 
+    
+
     public function massDestroy(MassDestroyProductCategoryRequest $request)
     {
         ProductCategory::whereIn('id', request('ids'))->delete();

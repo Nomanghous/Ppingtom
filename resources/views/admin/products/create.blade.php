@@ -1,13 +1,14 @@
 @extends('layouts.admin')
 @section('content')
-
-<div class="card">
+<form method="POST" action="{{ route("admin.products.store") }}" enctype="multipart/form-data">
+<div class="d-flex">
+<div class="card col-md-8">
     <div class="card-header">
         {{ trans('global.create') }} {{ trans('cruds.product.title_singular') }}
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.products.store") }}" enctype="multipart/form-data">
+        
             @csrf
             <div class="form-group">
                 <label class="required" for="name">{{ trans('cruds.product.fields.name') }}</label>
@@ -47,6 +48,14 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.product.fields.category_helper') }}</span>
             </div>
+           
+            <div class="form-group">
+            <label for="sub-categories">{{ trans('cruds.product.fields.category') }}</label>
+                <select name="subcategory" id="subcategory" class="form-control input-sm">
+                    <option value=""></option>
+                </select>
+            
+            </div>
             <div class="form-group">
                 <label for="tags">{{ trans('cruds.product.fields.tag') }}</label>
                 <div style="padding-bottom: 4px">
@@ -66,6 +75,7 @@
                 <span class="help-block">{{ trans('cruds.product.fields.tag_helper') }}</span>
             </div>
             <div class="form-group">
+            <div class="col-md-6">
                 <label for="photo">{{ trans('cruds.product.fields.photo') }}</label>
                 <div class="needsclick dropzone {{ $errors->has('photo') ? 'is-invalid' : '' }}" id="photo-dropzone">
                 </div>
@@ -76,7 +86,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.product.fields.photo_helper') }}</span>
             </div>
-            <div class="form-group">
+            <div class="col-md-6">
                 <label for="media_asset">{{ trans('cruds.product.fields.media_asset') }}</label>
                 <div class="needsclick dropzone {{ $errors->has('media_asset') ? 'is-invalid' : '' }}" id="media_asset-dropzone">
                 </div>
@@ -86,6 +96,7 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.product.fields.media_asset_helper') }}</span>
+            </div>
             </div>
             <div class="form-group">
                 <label class="required" for="city">{{ trans('cruds.product.fields.city') }}</label>
@@ -128,14 +139,24 @@
                 <span class="help-block">{{ trans('cruds.product.fields.longitude_helper') }}</span>
             </div>
             <div class="form-group">
+                <input type="hidden" for="user_id" name="user_id" value="{{Auth::id()}}"/>
+            </div>
+            <div class="form-group">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
                 </button>
             </div>
-        </form>
+       
     </div>
 </div>
-
+<div class="card col-md-4 float-right">
+        
+<div class="card-header">
+        Select Video
+    </div>
+    </div>
+    </div>
+</form>
 
 
 @endsection
@@ -258,6 +279,25 @@
         return _results
     }
 }
+</script>
+<script>
+  $(document).ready(function () { 
+            $('#category').on('change',function(e){
+            console.log(e);
+            var cat_id = e.target.value;
+            //console.log(cat_id);
+            //ajax
+            $.get('{{ route('admin.categories.') }}'cat_id='+ cat_id,function(data){
+                //success data
+               //console.log(data);
+                var subcat =  $('#subcategory').empty();
+                $.each(data,function(create,subcatObj){
+                    var option = $('<option/>', {id:create, value:subcatObj});
+                    subcat.append('<option value ="'+subcatObj+'">'+subcatObj+'</option>');
+                });
+            });
+        });
+    });
 </script>
 <script>
     Dropzone.options.mediaAssetDropzone = {
