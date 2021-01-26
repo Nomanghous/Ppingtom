@@ -44,7 +44,7 @@
                             {{ trans('cruds.product.fields.category') }}
                         </th>
                         <td>
-                            @foreach($product->categories as $key => $category)
+                            @foreach($product->subcategories as $key => $category)
                                 <span class="label label-info">{{ $category->name }}</span>
                             @endforeach
                         </td>

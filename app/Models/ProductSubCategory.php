@@ -1,17 +1,17 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\ProductCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 
-class SubCategory extends Model
+class ProductSubCategory extends Model
 {
     use SoftDeletes, HasFactory;
 
-    public $table = 'sub_categories';
+    public $table = 'product_sub_category';
 
     protected $dates = [
         'created_at',
@@ -34,6 +34,6 @@ class SubCategory extends Model
 
     public function category()
     {
-        return $this->belongsTo(MainCategory::class, 'category_id');
+        return $this->belongsTo(ProductCategory::class, 'category_id');
     }
 }

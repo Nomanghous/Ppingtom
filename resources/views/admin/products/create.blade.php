@@ -50,10 +50,12 @@
             </div>
            
             <div class="form-group">
+            
             <label for="sub-categories">{{ trans('cruds.product.fields.category') }}</label>
-                <select name="subcategory" id="subcategory" class="form-control input-sm">
-                    <option value=""></option>
+            <select class="form-control select2" name="subcategories[]" id="subcategory" multiple>
+            <option value=""></option>
                 </select>
+                
             
             </div>
             <div class="form-group">
@@ -282,22 +284,23 @@
 </script>
 <script>
   $(document).ready(function () { 
-            $('#category').on('change',function(e){
+    $('#categories').on('change',function(e){
+                
             console.log(e);
             var cat_id = e.target.value;
-            //console.log(cat_id);
-            //ajax
-            $.get('{{ route('admin.categories.') }}'cat_id='+ cat_id,function(data){
+            $.get('sub-categories/getById/'+ cat_id,function(data){
                 //success data
                //console.log(data);
                 var subcat =  $('#subcategory').empty();
                 $.each(data,function(create,subcatObj){
                     var option = $('<option/>', {id:create, value:subcatObj});
-                    subcat.append('<option value ="'+subcatObj+'">'+subcatObj+'</option>');
+                    subcat.append('<option value ="'+create+'">'+subcatObj+'</option>');
+                    console.log(create);
                 });
             });
         });
-    });
+            });
+    
 </script>
 <script>
     Dropzone.options.mediaAssetDropzone = {

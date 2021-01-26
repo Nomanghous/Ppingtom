@@ -41,15 +41,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('products/ckmedia', 'ProductController@storeCKEditorImages')->name('products.storeCKEditorImages');
     Route::resource('products', 'ProductController');
 
-    // Main Categories
-    Route::delete('main-categories/destroy', 'MainCategoriesController@massDestroy')->name('main-categories.massDestroy');
-    Route::post('main-categories/media', 'MainCategoriesController@storeMedia')->name('main-categories.storeMedia');
-    Route::post('main-categories/ckmedia', 'MainCategoriesController@storeCKEditorImages')->name('main-categories.storeCKEditorImages');
-    Route::resource('main-categories', 'MainCategoriesController');
-
+   
     // Sub Categories
     Route::delete('sub-categories/destroy', 'SubCategoriesController@massDestroy')->name('sub-categories.massDestroy');
-    Route::get('sub-categories/getById', 'SubCategoriesController@getById')->name('sub-categories.getById');
+    Route::get('products/sub-categories/getById/{id}', 'SubCategoriesController@getById')->name('admin.subcategories.byCatId');
     Route::resource('sub-categories', 'SubCategoriesController');
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {

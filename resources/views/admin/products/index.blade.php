@@ -73,7 +73,7 @@
                                 {{ $product->name ?? '' }}
                             </td>
                             <td>
-                                @foreach($product->categories as $key => $item)
+                                @foreach($product->subcategories as $key => $item)
                                     <span class="badge badge-info">{{ $item->name }}</span>
                                 @endforeach
                             </td>

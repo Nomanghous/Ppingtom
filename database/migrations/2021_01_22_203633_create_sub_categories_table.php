@@ -8,7 +8,7 @@ class CreateSubCategoriesTable extends Migration
 {
     public function up()
     {
-        Schema::create('sub_categories', function (Blueprint $table) {
+        Schema::create('product_sub_category', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->timestamps();

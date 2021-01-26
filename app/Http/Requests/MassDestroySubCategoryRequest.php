@@ -20,7 +20,7 @@ class MassDestroySubCategoryRequest extends FormRequest
     {
         return [
             'ids'   => 'required|array',
-            'ids.*' => 'exists:sub_categories,id',
+            'ids.*' => 'exists:product_sub_category,id',
         ];
     }
 }

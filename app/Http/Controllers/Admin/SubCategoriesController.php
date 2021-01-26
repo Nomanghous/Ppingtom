@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroySubCategoryRequest;
 use App\Http\Requests\StoreSubCategoryRequest;
 use App\Http\Requests\UpdateSubCategoryRequest;
-use App\Models\MainCategory;
-use App\Models\SubCategory;
+use App\Http\Requests\GetSubCategoriesById;
+use App\Models\ProductCategory;
+use App\Models\ProductSubCategory;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,7 @@ class SubCategoriesController extends Controller
     {
         abort_if(Gate::denies('sub_category_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $subCategories = SubCategory::with(['category'])->get();
+        $subCategories = ProductSubCategory::with(['category'])->get();
 
         return view('admin.subCategories.index', compact('subCategories'));
     }
@@ -27,14 +28,14 @@ class SubCategoriesController extends Controller
     {
         abort_if(Gate::denies('sub_category_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $categories = MainCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $categories = ProductCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         return view('admin.subCategories.create', compact('categories'));
     }
 
     public function store(StoreSubCategoryRequest $request)
     {
-        $subCategory = SubCategory::create($request->all());
+        $subCategory = ProductSubCategory::create($request->all());
 
         return redirect()->route('admin.sub-categories.index');
     }
@@ -43,7 +44,7 @@ class SubCategoriesController extends Controller
     {
         abort_if(Gate::denies('sub_category_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $categories = MainCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $categories = ProductCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $subCategory->load('category');
 
@@ -67,6 +68,15 @@ class SubCategoriesController extends Controller
     }
 
     
+    public function getById($id)
+    {
+        abort_if(Gate::denies('sub_category_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $subcategories = ProductSubCategory::where('category_id', $id)->pluck('name', 'id');
+        return $subcategories;
+    }
+
+    
+
 
     public function destroy(SubCategory $subCategory)
     {
@@ -79,7 +89,7 @@ class SubCategoriesController extends Controller
 
     public function massDestroy(MassDestroySubCategoryRequest $request)
     {
-        SubCategory::whereIn('id', request('ids'))->delete();
+        ProductSubCategory::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

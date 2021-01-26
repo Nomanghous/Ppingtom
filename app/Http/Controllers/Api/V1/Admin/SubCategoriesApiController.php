@@ -17,12 +17,12 @@ class SubCategoriesApiController extends Controller
     {
         abort_if(Gate::denies('sub_category_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new SubCategoryResource(SubCategory::with(['category'])->get());
+        return new SubCategoryResource(ProductSubCategory::with(['category'])->get());
     }
 
     public function store(StoreSubCategoryRequest $request)
     {
-        $subCategory = SubCategory::create($request->all());
+        $subCategory = ProductSubCategory::create($request->all());
 
         return (new SubCategoryResource($subCategory))
             ->response()

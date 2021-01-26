@@ -1,0 +1,2 @@
+News Application (Admin)
+News can have audio and Video.

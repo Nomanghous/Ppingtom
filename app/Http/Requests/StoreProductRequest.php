@@ -24,10 +24,10 @@ class StoreProductRequest extends FormRequest
             'description'  => [
                 'required',
             ],
-            'categories.*' => [
+            'subcategories.*' => [
                 'integer',
             ],
-            'categories'   => [
+            'subcategories'   => [
                 'array',
             ],
             'tags.*'       => [
