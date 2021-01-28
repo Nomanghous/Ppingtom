@@ -1,50 +1,47 @@
 @extends('layouts.admin')
 @section('content')
-@can('product_create')
+@can('location_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.products.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.product.title_singular') }}
+            <a class="btn btn-success" href="{{ route('admin.locations.create') }}">
+                {{ trans('global.add') }} {{ trans('cruds.location.title_singular') }}
             </a>
         </div>
     </div>
 @endcan
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.product.title_singular') }} {{ trans('global.list') }}
+        {{ trans('cruds.location.title_singular') }} {{ trans('global.list') }}
     </div>
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-Product">
+            <table class=" table table-bordered table-striped table-hover datatable datatable-Location">
                 <thead>
                     <tr>
                         <th width="10">
 
                         </th>
                         <th>
-                            {{ trans('cruds.product.fields.id') }}
+                            {{ trans('cruds.location.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.product.fields.name') }}
+                            {{ trans('cruds.location.fields.city') }}
                         </th>
                         <th>
-                            {{ trans('cruds.product.fields.category') }}
+                            {{ trans('cruds.location.fields.address') }}
                         </th>
                         <th>
-                            {{ trans('cruds.product.fields.tag') }}
+                            {{ trans('cruds.location.fields.country') }}
                         </th>
                         <th>
-                            {{ trans('cruds.product.fields.photo') }}
+                            {{ trans('cruds.location.fields.zip_code') }}
                         </th>
                         <th>
-                            {{ trans('cruds.product.fields.media_asset') }}
+                            {{ trans('cruds.location.fields.latitude') }}
                         </th>
                         <th>
-                            {{ trans('cruds.product.fields.user') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.product.fields.location') }}
+                            {{ trans('cruds.location.fields.logitude') }}
                         </th>
                         <th>
                             &nbsp;
@@ -52,62 +49,47 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($products as $key => $product)
-                        <tr data-entry-id="{{ $product->id }}">
+                    @foreach($locations as $key => $location)
+                        <tr data-entry-id="{{ $location->id }}">
                             <td>
 
                             </td>
                             <td>
-                                {{ $product->id ?? '' }}
+                                {{ $location->id ?? '' }}
                             </td>
                             <td>
-                                {{ $product->name ?? '' }}
+                                {{ $location->city ?? '' }}
                             </td>
                             <td>
-                                @foreach($product->categories as $key => $item)
-                                    <span class="badge badge-info">{{ $item->name }}</span>
-                                @endforeach
+                                {{ $location->address ?? '' }}
                             </td>
                             <td>
-                                @foreach($product->tags as $key => $item)
-                                    <span class="badge badge-info">{{ $item->name }}</span>
-                                @endforeach
+                                {{ $location->country ?? '' }}
                             </td>
                             <td>
-                                @if($product->photo)
-                                    <a href="{{ $product->photo->getUrl() }}" target="_blank" style="display: inline-block">
-                                        <img src="{{ $product->photo->getUrl('thumb') }}">
-                                    </a>
-                                @endif
+                                {{ $location->zip_code ?? '' }}
                             </td>
                             <td>
-                                @if($product->media_asset)
-                                    <a href="{{ $product->media_asset->getUrl() }}" target="_blank">
-                                        {{ trans('global.view_file') }}
-                                    </a>
-                                @endif
+                                {{ $location->latitude ?? '' }}
                             </td>
                             <td>
-                                {{ $product->user->name ?? '' }}
+                                {{ $location->logitude ?? '' }}
                             </td>
                             <td>
-                                {{ $product->location->address ?? '' }}
-                            </td>
-                            <td>
-                                @can('product_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.products.show', $product->id) }}">
+                                @can('location_show')
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.locations.show', $location->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
-                                @can('product_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.products.edit', $product->id) }}">
+                                @can('location_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.locations.edit', $location->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
-                                @can('product_delete')
-                                    <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                @can('location_delete')
+                                    <form action="{{ route('admin.locations.destroy', $location->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -132,11 +114,11 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('product_delete')
+@can('location_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.products.massDestroy') }}",
+    url: "{{ route('admin.locations.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -165,9 +147,9 @@
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
-    pageLength: 25,
+    pageLength: 100,
   });
-  let table = $('.datatable-Product:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  let table = $('.datatable-Location:not(.ajaxTable)').DataTable({ buttons: dtButtons })
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();

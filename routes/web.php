@@ -46,6 +46,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('sub-categories/destroy', 'SubCategoriesController@massDestroy')->name('sub-categories.massDestroy');
     Route::get('products/sub-categories/getById/{id}', 'SubCategoriesController@getById')->name('admin.subcategories.byCatId');
     Route::resource('sub-categories', 'SubCategoriesController');
+
+    // Locations
+    Route::delete('locations/destroy', 'LocationsController@massDestroy')->name('locations.massDestroy');
+    Route::resource('locations', 'LocationsController');
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
 // Change password

@@ -44,7 +44,7 @@
                             {{ trans('cruds.product.fields.category') }}
                         </th>
                         <td>
-                            @foreach($product->subcategories as $key => $category)
+                            @foreach($product->categories as $key => $category)
                                 <span class="label label-info">{{ $category->name }}</span>
                             @endforeach
                         </td>
@@ -85,42 +85,18 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.product.fields.city') }}
-                        </th>
-                        <td>
-                            {{ $product->city }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.product.fields.country') }}
-                        </th>
-                        <td>
-                            {{ $product->country }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.product.fields.latitdue') }}
-                        </th>
-                        <td>
-                            {{ $product->latitdue }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.product.fields.longitude') }}
-                        </th>
-                        <td>
-                            {{ $product->longitude }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
                             {{ trans('cruds.product.fields.user') }}
                         </th>
                         <td>
                             {{ $product->user->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.product.fields.location') }}
+                        </th>
+                        <td>
+                            {{ $product->location->address ?? '' }}
                         </td>
                     </tr>
                 </tbody>

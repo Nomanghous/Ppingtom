@@ -84,4 +84,9 @@ class Product extends Model implements HasMedia
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id');
+    }
 }

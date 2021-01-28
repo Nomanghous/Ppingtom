@@ -8,6 +8,7 @@ use App\Http\Requests\MassDestroyProductRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\Location;
 use App\Models\ProductCategory;
 use App\Models\ProductTag;
 use App\Models\User;
@@ -24,7 +25,8 @@ class ProductController extends Controller
     {
         abort_if(Gate::denies('product_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $products = Product::with(['subcategories', 'tags', 'user', 'media'])->get();
+        $products = Product::with(['categories', 'tags', 'user', 'location', 'media'])->get();
+
 
         return view('admin.products.index', compact('products'));
     }
@@ -38,8 +40,10 @@ class ProductController extends Controller
         $tags = ProductTag::all()->pluck('name', 'id');
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $locations = Location::all()->pluck('address', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.products.create', compact('categories','tags', 'users'));
+        return view('admin.products.create', compact('categories', 'tags', 'users', 'locations'));
+        
     }
 
     public function store(StoreProductRequest $request)
@@ -73,9 +77,14 @@ class ProductController extends Controller
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
+        $locations = Location::all()->pluck('address', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        $product->load('subcategories', 'tags', 'user', 'location');
+
+        
         $product->load('subcategories', 'tags', 'user');
 
-        return view('admin.products.edit', compact('categories', 'tags', 'users', 'product'));
+        return view('admin.products.edit', compact('categories', 'tags', 'users', 'locations', 'product'));
     }
 
     public function update(UpdateProductRequest $request, Product $product)
@@ -115,7 +124,7 @@ class ProductController extends Controller
     {
         abort_if(Gate::denies('product_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $product->load('subcategories', 'tags', 'user');
+        $product->load('subcategories', 'tags', 'user', 'location');
 
         return view('admin.products.show', compact('product'));
     }

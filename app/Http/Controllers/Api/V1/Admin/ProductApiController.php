@@ -92,4 +92,13 @@ class ProductApiController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
+
+    public function fetchNearbyProducts()
+    {
+        abort_if(Gate::denies('product_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return new ProductResource($product->load(['categories', 'tags']));
+    }
+
+    
 }

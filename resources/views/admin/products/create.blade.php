@@ -2,7 +2,7 @@
 @section('content')
 <form method="POST" action="{{ route("admin.products.store") }}" enctype="multipart/form-data">
 <div class="d-flex">
-<div class="card col-md-8">
+<div class="card col-md-12">
     <div class="card-header">
         {{ trans('global.create') }} {{ trans('cruds.product.title_singular') }}
     </div>
@@ -77,7 +77,7 @@
                 <span class="help-block">{{ trans('cruds.product.fields.tag_helper') }}</span>
             </div>
             <div class="form-group">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label for="photo">{{ trans('cruds.product.fields.photo') }}</label>
                 <div class="needsclick dropzone {{ $errors->has('photo') ? 'is-invalid' : '' }}" id="photo-dropzone">
                 </div>
@@ -88,7 +88,10 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.product.fields.photo_helper') }}</span>
             </div>
-            <div class="col-md-6">
+            </div>
+            <div class="form-group">
+            
+            <div class="col-md-12">
                 <label for="media_asset">{{ trans('cruds.product.fields.media_asset') }}</label>
                 <div class="needsclick dropzone {{ $errors->has('media_asset') ? 'is-invalid' : '' }}" id="media_asset-dropzone">
                 </div>
@@ -97,51 +100,26 @@
                         {{ $errors->first('media_asset') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.product.fields.media_asset_helper') }}</span>
+                
             </div>
             </div>
-            <div class="form-group">
-                <label class="required" for="city">{{ trans('cruds.product.fields.city') }}</label>
-                <input class="form-control {{ $errors->has('city') ? 'is-invalid' : '' }}" type="text" name="city" id="city" value="{{ old('city', 'None') }}" required>
-                @if($errors->has('city'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('city') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.product.fields.city_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label class="required" for="country">{{ trans('cruds.product.fields.country') }}</label>
-                <input class="form-control {{ $errors->has('country') ? 'is-invalid' : '' }}" type="text" name="country" id="country" value="{{ old('country', 'None') }}" required>
-                @if($errors->has('country'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('country') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.product.fields.country_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label class="required" for="latitdue">{{ trans('cruds.product.fields.latitdue') }}</label>
-                <input class="form-control {{ $errors->has('latitdue') ? 'is-invalid' : '' }}" type="text" name="latitdue" id="latitdue" value="{{ old('latitdue', '-33.23123123123') }}" step="0.0000000001" required>
-                @if($errors->has('latitdue'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('latitdue') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.product.fields.latitdue_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label class="required" for="longitude">{{ trans('cruds.product.fields.longitude') }}</label>
-                <input class="form-control {{ $errors->has('longitude') ? 'is-invalid' : '' }}" type="text" name="longitude" id="longitude" value="{{ old('longitude', '') }}" step="0.0000000001" required>
-                @if($errors->has('longitude'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('longitude') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.product.fields.longitude_helper') }}</span>
-            </div>
+            
             <div class="form-group">
                 <input type="hidden" for="user_id" name="user_id" value="{{Auth::id()}}"/>
+            </div>
+            <div class="form-group">
+                <label for="location_id">{{ trans('cruds.product.fields.location') }}</label>
+                <select class="form-control select2 {{ $errors->has('location') ? 'is-invalid' : '' }}" name="location_id" id="location_id">
+                    @foreach($locations as $id => $location)
+                        <option value="{{ $id }}" {{ old('location_id') == $id ? 'selected' : '' }}>{{ $location }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('location'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('location') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.product.fields.location_helper') }}</span>
             </div>
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">
@@ -151,12 +129,7 @@
        
     </div>
 </div>
-<div class="card col-md-4 float-right">
-        
-<div class="card-header">
-        Select Video
-    </div>
-    </div>
+
     </div>
 </form>
 
@@ -164,6 +137,16 @@
 @endsection
 
 @section('scripts')
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&key=" {{ env('GOOGLE_MAPS_API_KEY') }}></script>
+<script type="text/javascript">
+    google.maps.event.addDomListener(window, 'load', function () {
+        var places = new google.maps.places.Autocomplete(document.getElementById('txtPlaces'));
+        google.maps.event.addListener(places, 'place_changed', function () {
+
+        });
+    });
+</script>
+
 <script>
     $(document).ready(function () {
   function SimpleUploadAdapter(editor) {
