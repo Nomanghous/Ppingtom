@@ -2,19 +2,25 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
-use Gate;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Response;
 
-class StoreUserRequest extends FormRequest
+class RegisterUserApiRequest extends FormRequest
 {
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
     public function authorize()
     {
-        return Gate::allows('user_create');
-        
+        return true;
     }
 
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -28,14 +34,7 @@ class StoreUserRequest extends FormRequest
             ],
             'password' => [
                 'required',
-            ],
-            'roles.*'  => [
-                'integer',
-            ],
-            'roles'    => [
-                'required',
-                'array',
-            ],
+            ]
         ];
     }
 }

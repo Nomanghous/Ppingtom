@@ -25,7 +25,7 @@ class ProductController extends Controller
     {
         abort_if(Gate::denies('product_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $products = Product::with(['categories', 'tags', 'user', 'location', 'media'])->get();
+        $products = Product::with(['subcategories', 'tags', 'user', 'location', 'media'])->get();
 
 
         return view('admin.products.index', compact('products'));
@@ -49,7 +49,7 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         $product = Product::create($request->all());
-        // $product->categories()->sync($request->input('categories', []));
+        $product->location()->sync($request->input('location_id'));
         $product->tags()->sync($request->input('tags', []));
         $product->subcategories()->sync($request->input('subcategories', []));
         if ($request->input('photo', false)) {

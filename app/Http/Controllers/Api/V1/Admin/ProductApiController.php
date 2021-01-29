@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use App\Http\Resources\Admin\ProductResource;
+use App\Http\Requests\GetNearbyNewsRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Models\Location;
+use App\Models\ProductLocation;
 use Gate;
+use DB;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -93,11 +97,20 @@ class ProductApiController extends Controller
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function fetchNearbyProducts()
+    public function fetchNearbyProducts(GetNearbyNewsRequest $request)
     {
-        abort_if(Gate::denies('product_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $distance = env('NEARBY_NEWS_DISTANCE');
+        $query = Location::select(DB::raw('*, ( 6367 * acos( cos( radians(' . $request['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( logitude ) - radians(' . $request['logitude'] . ') ) + sin( radians(' . $request['latitude'] . ') ) * sin( radians( latitude ) ) ) ) AS distance'))
+            ->having('distance', '<', $distance)
+            ->orderBy('distance')->first();
 
-        return new ProductResource($product->load(['categories', 'tags']));
+        $result = ProductLocation::whereHas('location_id', function($q){
+            $q->where('location_id', 1)->paginate(8);
+        })->get();
+        // $result = Product::with('location')->where('id', $query['id'])->get();
+        return response()->json([
+            'data'=> $result
+        ]);
     }
 
     

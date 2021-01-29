@@ -1,6 +1,9 @@
 <?php
 
-Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', 'middleware' => ['auth:sanctum']], function () {
+Route::post('login', 'Api\V1\Admin\UsersApiController@login');
+Route::post('register', 'Api\V1\Admin\UsersApiController@register');
+
+Route::group(['prefix' => 'v1', 'name' => 'api.', 'namespace' => 'Api\V1\Admin', 'middleware' => ['auth:sanctum']], function () {
     // Permissions
     Route::apiResource('permissions', 'PermissionsApiController');
 
@@ -21,6 +24,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     // Products
     Route::post('products/media', 'ProductApiController@storeMedia')->name('products.storeMedia');
     Route::apiResource('products', 'ProductApiController');
+    Route::get('fetchNearbyProducts', 'ProductApiController@fetchNearbyProducts');
 
  
     // Sub Categories
@@ -29,6 +33,6 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
 
     // Locations
     Route::apiResource('locations', 'LocationsApiController');
-
+    Route::get('getAlllocations', 'LocationsApiController@getAll');
 
 });

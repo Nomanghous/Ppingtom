@@ -12,10 +12,7 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->nullable();
             $table->longText('description')->nullable();
-            $table->string('city')->nullable();
-            $table->string('country')->nullable();
-            $table->float('latitdue', 12, 10)->nullable();
-            $table->float('longitude', 12, 10)->nullable();
+            
             $table->timestamps();
             $table->softDeletes();
         });

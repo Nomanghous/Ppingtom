@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\RegisterUserApiRequest;
+use App\Http\Requests\LoginUserApiRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\Admin\UserResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
+use Auth;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,4 +58,61 @@ class UsersApiController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
+    
+
+    public function register(RegisterUserApiRequest $request)
+    {
+        $user = User::create($request->all());
+        $user->roles()->sync($request->input('roles', []));
+        $token =$user->createToken("remember_token")->plainTextToken;
+        $user->remember_token = $token;
+        $user->save();
+        // return $user;
+        return (new UserResource($user))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
+    }
+    
+
+    public function login(LoginUserApiRequest $request)
+    {
+    
+        //Store Email field Value
+        $loginValue = $request->input('email');
+
+        //Get Login Type
+        $login_type = 'email';
+
+        //Change request type based on user input
+        $request->merge([
+            $login_type => $loginValue
+        ]);
+
+        //Check Credentials and redirect
+        $auth = Auth::attempt($request->only($login_type, 'password'));
+        if (!$auth) {
+            return response()->json(
+                [
+                    'status_code' => 401,
+                'message' => 'Email or Password Incorrect.'
+                ]
+            );
+        }else{
+            $user = User::where('email', $request->email)->first();
+            $token = $user->createToken("remember_token")->plainTextToken;
+            $user->remember_token = $token;
+            return response()->json(
+                [
+                    'status_code' => 200,
+                    'message' => 'success',
+                    'data' => [
+                        'user' => $user,
+                        'access_token' => $token
+                    ]
+                ]
+            );
+        }
+        
+    }
+
 }

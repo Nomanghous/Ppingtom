@@ -35,23 +35,7 @@ class UpdateProductRequest extends FormRequest
             ],
             'tags'         => [
                 'array',
-            ],
-            'city'         => [
-                'string',
-                'required',
-            ],
-            'country'      => [
-                'string',
-                'required',
-            ],
-            'latitdue'     => [
-                'numeric',
-                'required',
-            ],
-            'longitude'    => [
-                'numeric',
-                'required',
-            ],
+            ]
         ];
     }
 }

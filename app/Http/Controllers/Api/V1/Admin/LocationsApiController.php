@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLocationRequest;
 use App\Http\Requests\UpdateLocationRequest;
-use App\Http\Resources\Admin\LocationResource;
+use App\Http\Resources\LocationResource;
 use App\Models\Location;
 use Gate;
 use Illuminate\Http\Request;
@@ -52,5 +52,9 @@ class LocationsApiController extends Controller
         $location->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function getAll(){
+        return new LocationResource(Location::get());
     }
 }
