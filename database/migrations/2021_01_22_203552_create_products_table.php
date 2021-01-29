@@ -12,7 +12,7 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->nullable();
             $table->longText('description')->nullable();
-            
+            $table->unsignedBigInteger('location_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

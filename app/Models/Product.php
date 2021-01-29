@@ -30,6 +30,7 @@ class Product extends Model implements HasMedia
     protected $fillable = [
         'name',
         'description',
+        'location_id',
         'user_id',
         'created_at',
         'updated_at',
@@ -83,6 +84,6 @@ class Product extends Model implements HasMedia
 
     public function location()
     {
-        return $this->belongsTo(Location::class);
+        return $this->belongsTo(Location::class, 'location_id');
     }
 }

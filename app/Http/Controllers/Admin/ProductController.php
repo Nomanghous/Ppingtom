@@ -49,7 +49,6 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         $product = Product::create($request->all());
-        $product->location()->sync($request->input('location_id'));
         $product->tags()->sync($request->input('tags', []));
         $product->subcategories()->sync($request->input('subcategories', []));
         if ($request->input('photo', false)) {

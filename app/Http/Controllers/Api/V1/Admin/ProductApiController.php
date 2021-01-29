@@ -102,12 +102,8 @@ class ProductApiController extends Controller
         $distance = env('NEARBY_NEWS_DISTANCE');
         $query = Location::select(DB::raw('*, ( 6367 * acos( cos( radians(' . $request['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( logitude ) - radians(' . $request['logitude'] . ') ) + sin( radians(' . $request['latitude'] . ') ) * sin( radians( latitude ) ) ) ) AS distance'))
             ->having('distance', '<', $distance)
-            ->orderBy('distance')->first();
-
-        $result = ProductLocation::whereHas('location_id', function($q){
-            $q->where('location_id', 1)->paginate(8);
-        })->get();
-        // $result = Product::with('location')->where('id', $query['id'])->get();
+            ->orderBy('distance')->pluck('id');
+        $result = Product::whereIn('location_id', $query)->get();
         return response()->json([
             'data'=> $result
         ]);

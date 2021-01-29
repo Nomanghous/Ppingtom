@@ -88,59 +88,9 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.product.fields.media_asset_helper') }}</span>
             </div>
+            
             <div class="form-group">
-                <label class="required" for="city">{{ trans('cruds.product.fields.city') }}</label>
-                <input class="form-control {{ $errors->has('city') ? 'is-invalid' : '' }}" type="text" name="city" id="city" value="{{ old('city', $product->city) }}" required>
-                @if($errors->has('city'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('city') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.product.fields.city_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label class="required" for="country">{{ trans('cruds.product.fields.country') }}</label>
-                <input class="form-control {{ $errors->has('country') ? 'is-invalid' : '' }}" type="text" name="country" id="country" value="{{ old('country', $product->country) }}" required>
-                @if($errors->has('country'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('country') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.product.fields.country_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label class="required" for="latitdue">{{ trans('cruds.product.fields.latitdue') }}</label>
-                <input class="form-control {{ $errors->has('latitdue') ? 'is-invalid' : '' }}" type="number" name="latitdue" id="latitdue" value="{{ old('latitdue', $product->latitdue) }}" step="0.0000000001" required>
-                @if($errors->has('latitdue'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('latitdue') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.product.fields.latitdue_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label class="required" for="longitude">{{ trans('cruds.product.fields.longitude') }}</label>
-                <input class="form-control {{ $errors->has('longitude') ? 'is-invalid' : '' }}" type="number" name="longitude" id="longitude" value="{{ old('longitude', $product->longitude) }}" step="0.0000000001" required>
-                @if($errors->has('longitude'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('longitude') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.product.fields.longitude_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label class="required" for="user_id">{{ trans('cruds.product.fields.user') }}</label>
-                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
-                    @foreach($users as $id => $user)
-                        <option value="{{ $id }}" {{ (old('user_id') ? old('user_id') : $product->user->id ?? '') == $id ? 'selected' : '' }}>{{ $user }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('user'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('user') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.product.fields.user_helper') }}</span>
+                <input type="hidden" for="user_id" name="user_id" value="{{Auth::id()}}"/>
             </div>
             <div class="form-group">
                 <label for="location_id">{{ trans('cruds.product.fields.location') }}</label>
