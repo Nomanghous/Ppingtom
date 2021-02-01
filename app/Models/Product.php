@@ -52,6 +52,7 @@ class Product extends Model implements HasMedia
     {
         return $this->belongsToMany(ProductSubCategory::class);
     }
+
     
     
     public function tags()

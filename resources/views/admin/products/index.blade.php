@@ -32,6 +32,9 @@
                             {{ trans('cruds.product.fields.category') }}
                         </th>
                         <th>
+                            {{ trans('cruds.product.fields.subcategory') }}
+                        </th>
+                        <th>
                             {{ trans('cruds.product.fields.tag') }}
                         </th>
                         <th>
@@ -62,6 +65,11 @@
                             </td>
                             <td>
                                 {{ $product->name ?? '' }}
+                            </td>
+                            <td>
+                                @foreach($categories as $key => $item)
+                                    <span class="badge badge-info">{{$item}}</span>
+                                @endforeach
                             </td>
                             <td>
                                 @foreach($product->subcategories as $key => $item)

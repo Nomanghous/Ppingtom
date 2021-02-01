@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\Location;
 use App\Models\ProductCategory;
+use App\Models\ProductSubCategory;
 use App\Models\ProductTag;
 use App\Models\User;
 use Gate;
@@ -26,9 +27,10 @@ class ProductController extends Controller
         abort_if(Gate::denies('product_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $products = Product::with(['subcategories', 'tags', 'user', 'location', 'media'])->get();
+        $categories = ProductCategory::all()->pluck('name', 'id');
 
 
-        return view('admin.products.index', compact('products'));
+        return view('admin.products.index', compact('products','categories'));
     }
 
     public function create()
@@ -71,7 +73,7 @@ class ProductController extends Controller
         abort_if(Gate::denies('product_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $categories = ProductCategory::all()->pluck('name', 'id');
-
+        $subcategories = ProductSubCategory::all()->pluck('name', 'id');
         $tags = ProductTag::all()->pluck('name', 'id');
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
@@ -81,9 +83,7 @@ class ProductController extends Controller
         $product->load('subcategories', 'tags', 'user', 'location');
 
         
-        $product->load('subcategories', 'tags', 'user');
-
-        return view('admin.products.edit', compact('categories', 'tags', 'users', 'locations', 'product'));
+        return view('admin.products.edit', compact('categories','subcategories', 'tags', 'users', 'locations', 'product'));
     }
 
     public function update(UpdateProductRequest $request, Product $product)

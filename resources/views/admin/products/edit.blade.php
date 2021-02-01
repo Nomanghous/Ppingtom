@@ -38,7 +38,7 @@
                 </div>
                 <select class="form-control select2 {{ $errors->has('categories') ? 'is-invalid' : '' }}" name="categories[]" id="categories" multiple>
                     @foreach($categories as $id => $category)
-                        <option value="{{ $id }}" {{ (in_array($id, old('categories', [])) || $product->categories->contains($id)) ? 'selected' : '' }}>{{ $category }}</option>
+                        <option value="{{ $id }}" {{ (in_array($id, old('categories', [])) || $product->subcategories->contains($id)) ? 'selected' : '' }}>{{ $category }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('categories'))
@@ -47,6 +47,17 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.product.fields.category_helper') }}</span>
+            </div>
+            <div class="form-group">
+            
+            <label for="sub-categories">{{ trans('cruds.product.fields.subcategory') }}</label>
+            <select class="form-control select2" name="subcategories[]" id="subcategory" multiple>
+                    @foreach($subcategories as $id => $subcategory)
+                        <option value="{{ $id }}" {{ (in_array($id, old('categories', [])) || $product->subcategories->contains($id)) ? 'selected' : '' }}>{{ $subcategory }}</option>
+                    @endforeach
+                </select>
+                
+            
             </div>
             <div class="form-group">
                 <label for="tags">{{ trans('cruds.product.fields.tag') }}</label>

@@ -116,6 +116,7 @@ return [
             'description'        => 'Description',
             'description_helper' => ' ',
             'category'           => 'Categories',
+            'subcategory'           => 'Sub-Categories',
             'category_helper'    => ' ',
             'tag'                => 'Tags',
             'tag_helper'         => ' ',
