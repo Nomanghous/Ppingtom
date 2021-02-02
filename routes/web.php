@@ -49,6 +49,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Locations
     Route::delete('locations/destroy', 'LocationsController@massDestroy')->name('locations.massDestroy');
+    Route::post('locations/setDefault', 'LocationsController@setDefault')->name('locations.setDefault');
     Route::resource('locations', 'LocationsController');
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {

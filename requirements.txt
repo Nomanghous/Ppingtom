@@ -1,2 +1,7 @@
 News Application (Admin)
 News can have audio and Video.
+
+Location
+Google Autocomplete needs to be fixed
+Set a single default location to be shown into the news form everytime.
+

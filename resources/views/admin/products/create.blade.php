@@ -111,7 +111,7 @@
                 <label for="location_id">{{ trans('cruds.product.fields.location') }}</label>
                 <select class="form-control select2 {{ $errors->has('location') ? 'is-invalid' : '' }}" name="location_id" id="location_id">
                     @foreach($locations as $id => $location)
-                        <option value="{{ $id }}" {{ old('location_id') == $id ? 'selected' : '' }}>{{ $location }}</option>
+                        <option value="{{ $id }}" {{ old('location_id') == $id ? 'selected' : ( $location->isDefault ? 'selected' : '') }}>{{ $location->address }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('location'))

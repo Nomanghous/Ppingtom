@@ -195,6 +195,21 @@ class PermissionsTableSeeder extends Seeder
                 'title' => 'location_access',
             ],
 
+            [
+                'id'    => 47,
+                'title' => 'location_show',
+            ],
+
+            [
+                'id'    => 48,
+                'title' => 'location_edit',
+            ],
+
+            [
+                'id'    => 49,
+                'title' => 'location_delete',
+            ],
+
             
         ];
 

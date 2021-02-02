@@ -42,7 +42,7 @@ class ProductController extends Controller
         $tags = ProductTag::all()->pluck('name', 'id');
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-        $locations = Location::all()->pluck('address', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $locations = Location::all();
 
         return view('admin.products.create', compact('categories', 'tags', 'users', 'locations'));
         

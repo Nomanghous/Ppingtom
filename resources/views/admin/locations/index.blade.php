@@ -19,9 +19,7 @@
             <table class=" table table-bordered table-striped table-hover datatable datatable-Location">
                 <thead>
                     <tr>
-                        <th width="10">
-
-                        </th>
+                       
                         <th>
                             {{ trans('cruds.location.fields.id') }}
                         </th>
@@ -43,17 +41,18 @@
                         <th>
                             {{ trans('cruds.location.fields.logitude') }}
                         </th>
+
                         <th>
-                            &nbsp;
+                            {{ trans('cruds.location.fields.isdefault') }}
                         </th>
+                       
+
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($locations as $key => $location)
                         <tr data-entry-id="{{ $location->id }}">
-                            <td>
-
-                            </td>
+                           
                             <td>
                                 {{ $location->id ?? '' }}
                             </td>
@@ -74,6 +73,9 @@
                             </td>
                             <td>
                                 {{ $location->logitude ?? '' }}
+                            </td>
+                            <td>
+                                {{ $location->isDefault ?? '' }}
                             </td>
                             <td>
                                 @can('location_show')
@@ -156,6 +158,19 @@
   });
   
 })
+
+$('.datatable-Location').on('click', 'tr', function() {
+    var id = $(this).attr('data-entry-id');
+    if (confirm('{{ trans('global.areYouSure') }}')) {
+            $.ajax({
+            headers: {'x-csrf-token': _token},
+            method: 'POST',
+            url: "{{ route('admin.locations.setDefault') }}",
+            data: { id: id, _method: 'POST' }})
+            .done(function () { location.reload() })
+        }
+
+});
 
 </script>
 @endsection

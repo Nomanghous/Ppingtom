@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyLocationRequest;
 use App\Http\Requests\StoreLocationRequest;
 use App\Http\Requests\UpdateLocationRequest;
+use App\Http\Requests\SetDefaultLocationRequest;
 use App\Models\Location;
 use Gate;
 use Illuminate\Http\Request;
@@ -71,5 +72,19 @@ class LocationsController extends Controller
         Location::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+
+
+    // Set Default
+    public function setDefault(SetDefaultLocationRequest $request)
+    {
+        abort_if(Gate::denies('location_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        Location::where('id', '!=' ,$request->id)->update(['isDefault' => 0]);
+        Location::where('id', $request->id)->update([
+            'isDefault' => 1
+        ]);
+        return redirect()->route('admin.locations.index');
     }
 }

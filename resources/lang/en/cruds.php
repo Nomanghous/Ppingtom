@@ -195,6 +195,8 @@ return [
             'latitude'          => 'Latitude',
             'latitude_helper'   => ' ',
             'logitude'          => 'Logitude',
+            'isdefault'         => 'Default',
+            'isdefault_helper'  => ' ',
             'logitude_helper'   => ' ',
             'created_at'        => 'Created at',
             'created_at_helper' => ' ',

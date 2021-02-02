@@ -90,23 +90,28 @@
 @endsection
 @section('scripts')
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA536J-UdgNKBtmt0XkLdG0U7Jy-hhgg9M"
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD36Lt_W4pJk7v9NHP_r_WsV1AG3awtqRE&callback=initialize&sensor=false&libraries=places"
   type="text/javascript"></script>
+  
 
 
 <script>
-   google.maps.event.addDomListener(window, 'load', initialize);
+//    google.maps.event.addDomListener(window, 'load', initialize);
 
    function initialize() {
-       var input = document.getElementById('autocomplete');
-       var autocomplete = new google.maps.places.Autocomplete(input);
-       autocomplete.addListener('place_changed', function() {
-           var place = autocomplete.getPlace();
+    let locationField = document.getElementById('autocomplete');
+    let autocomplete = new google.maps.places.Autocomplete(locationField);
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+        
+        specifiedLocationObject = place;
+        var place = autocomplete.getPlace();
            $('#latitude').val(place.geometry['location'].lat());
            $('#longitude').val(place.geometry['location'].lng());
+           
            $("#lat_area").removeClass("d-none");
            $("#long_area").removeClass("d-none");
-       });
+    });
+       
    }
 </script>
 @endsection
