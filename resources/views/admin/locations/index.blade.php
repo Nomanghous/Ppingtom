@@ -75,7 +75,7 @@
                                 {{ $location->logitude ?? '' }}
                             </td>
                             <td>
-                                {{ $location->isDefault ?? '' }}
+                                {{ $location->isDefault == 1 ? 'Yes' : 'No' }}
                             </td>
                             <td>
                                 @can('location_show')
@@ -161,7 +161,7 @@
 
 $('.datatable-Location').on('click', 'tr', function() {
     var id = $(this).attr('data-entry-id');
-    if (confirm('{{ trans('global.areYouSure') }}')) {
+    if (confirm('Do you want to set it default location?')) {
             $.ajax({
             headers: {'x-csrf-token': _token},
             method: 'POST',

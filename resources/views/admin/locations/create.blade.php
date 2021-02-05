@@ -100,18 +100,38 @@
 
    function initialize() {
     let locationField = document.getElementById('autocomplete');
+    var geocoder = new google.maps.Geocoder();
+
     let autocomplete = new google.maps.places.Autocomplete(locationField);
     google.maps.event.addListener(autocomplete, 'place_changed', function () {
         
         specifiedLocationObject = place;
+        
         var place = autocomplete.getPlace();
            $('#latitude').val(place.geometry['location'].lat());
-           $('#longitude').val(place.geometry['location'].lng());
-           
+           $('#logitude').val(place.geometry['location'].lng());
+           var addressChunks = place.formatted_address.split(',');
+           console.log(place.formatted_address);
+           console.log(addressChunks[addressChunks.length - 1]);
+           console.log(addressChunks[addressChunks.length - 2]);
+            var city = "", country = "";
+           if(addressChunks.length > 2){
+                country = addressChunks[addressChunks.length - 1];
+                city = addressChunks[addressChunks.length - 2];
+           }else if(addressChunks.length > 1){
+                country = addressChunks[addressChunks.length - 1];
+                city = addressChunks[addressChunks.length - 2];
+           }
+           $('#country').val(country);
+           $('#city').val(city);
+           $('#address').val(place.formatted_address);
            $("#lat_area").removeClass("d-none");
            $("#long_area").removeClass("d-none");
     });
        
    }
+
+
+  
 </script>
 @endsection
