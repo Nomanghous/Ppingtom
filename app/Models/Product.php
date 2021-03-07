@@ -52,8 +52,11 @@ class Product extends Model implements HasMedia
     {
         return $this->belongsToMany(ProductSubCategory::class);
     }
-
     
+    public function category()
+    {
+        return $this->belongsToMany(ProductCategory::class);
+    }
     
     public function tags()
     {
@@ -87,4 +90,25 @@ class Product extends Model implements HasMedia
     {
         return $this->belongsTo(Location::class, 'location_id');
     }
+
+    public function votes()
+    {
+        return $this->hasMany('App\Models\Vote');
+    }
+
+    public function upVotes()
+    {
+        return $this->votes()->where('type', 'up')->count();
+    }
+
+    public function downVotes()
+    {
+        return $this->votes()->where('type', 'down')->count();
+    }
+
+    public function voteCount()
+    {
+        return $this->upVotes() - $this->downVotes();
+    }
+
 }

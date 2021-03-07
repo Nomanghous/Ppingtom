@@ -24,13 +24,18 @@ Route::group(['prefix' => 'v1', 'name' => 'api.', 'namespace' => 'Api\V1\Admin',
     // Products
     Route::post('products/media', 'ProductApiController@storeMedia')->name('products.storeMedia');
     Route::apiResource('products', 'ProductApiController');
-    Route::get('fetchNearbyProducts', 'ProductApiController@fetchNearbyProducts');
+    Route::post('fetchNearbyProducts', 'ProductApiController@fetchNearbyProducts');
+    Route::post('fetchProductByTopic', 'ProductApiController@fetchProductByTopic');
+    Route::post('fetchNearbyProductsWithDate', 'ProductApiController@fetchNearbyProductsWithDate');
+    
+    // Voting System
+    Route::post('upvoteProduct', 'ProductApiController@upvoteProduct');
 
- 
     // Sub Categories
     Route::apiResource('sub-categories', 'SubCategoriesApiController');
     Route::get('sub-categories/getById/{category_id}', 'SubCategoriesController@getById')->name('admin.subcategories.byCatId');
-
+    Route::get('getProductCategoriesWithSub', 'ProductCategoryApiController@getProductCategoriesWithSub');
+    
     // Locations
     Route::apiResource('locations', 'LocationsApiController');
     Route::get('getAlllocations', 'LocationsApiController@getAll');

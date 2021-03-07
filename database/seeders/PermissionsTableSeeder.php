@@ -208,9 +208,7 @@ class PermissionsTableSeeder extends Seeder
             [
                 'id'    => 49,
                 'title' => 'location_delete',
-            ],
-
-            
+            ]
         ];
 
         Permission::insert($permissions);

@@ -60,20 +60,48 @@ class UsersApiController extends Controller
     }
     
 
+    public function getById($id)
+    {
+
+        if (User::where('id', $id)->exists()) {
+            $user = User::where('id', $id)->get();
+            
+            return response()->json(
+                [
+                    'status_code' => 200,
+                    'message' => 'success',
+                    'data' => [
+                        'user' => $user,
+                    ]
+                ]
+            );
+          } else {
+            return response()->json([
+              "message" => "user not found"
+            ], 404);
+          }
+        
+    }
+    
     public function register(RegisterUserApiRequest $request)
     {
         $user = User::create($request->all());
-        $user->roles()->sync($request->input('roles', []));
+        $user->roles()->sync($request->input('roles', [2]));
         $token =$user->createToken("remember_token")->plainTextToken;
-        $user->remember_token = $token;
         $user->save();
         // return $user;
-        return (new UserResource($user))
-            ->response()
-            ->setStatusCode(Response::HTTP_CREATED);
+        return response()->json(
+            [
+                'status_code' => 200,
+                'message' => 'success',
+                'data' => [
+                    'user' => $user,
+                    'access_token' => $token
+                ]
+            ]
+        );
     }
     
-
     public function login(LoginUserApiRequest $request)
     {
     

@@ -72,4 +72,18 @@ class ProductCategoryApiController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
+
+    public function getProductCategoriesWithSub()
+    {
+        abort_if(Gate::denies('sub_category_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return response()->json(
+            [
+                'status_code' => 200,
+                'message' => 'success',
+                'data' => [
+                    'categories' => ProductCategory::with(['subcategories'])->get(),
+                ]
+            ]
+        );
+    }
 }

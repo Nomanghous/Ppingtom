@@ -19,7 +19,7 @@ class ProductCategory extends Model implements HasMedia
     ];
 
     public $table = 'product_categories';
-
+    
     protected $dates = [
         'created_at',
         'updated_at',
@@ -56,5 +56,10 @@ class ProductCategory extends Model implements HasMedia
         }
 
         return $file;
+    }
+
+    public function subcategories()
+    {
+        return $this->hasMany('App\Models\ProductSubCategory', 'category_id');
     }
 }
