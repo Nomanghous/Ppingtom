@@ -30,7 +30,7 @@ class UpvoteProductRequest extends FormRequest
             'user_id'    => [
                 'required',
             ],
-            'type_id'    => [
+            'type'    => [
                 'required',
             ]
         ];

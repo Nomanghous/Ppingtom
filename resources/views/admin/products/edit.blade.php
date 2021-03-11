@@ -118,6 +118,13 @@
                 <span class="help-block">{{ trans('cruds.product.fields.location_helper') }}</span>
             </div>
             <div class="form-group">
+                <div class="form-check">
+                    <input type="hidden" name="is_verified" value="0" />
+                    <input class="form-check-input" type="checkbox" name="is_verified" id="is_verified" value="0" {{$product->is_verified || old('is_verified',0) === 1 ? 'checked' : 'unchecked'}} />
+                    <label class="form-check-label" for="is_verified">{{ trans('cruds.product.fields.is_verified') }}</label>
+                </div> 
+            </div>
+            <div class="form-group">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
                 </button>

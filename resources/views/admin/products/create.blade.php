@@ -76,6 +76,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.product.fields.tag_helper') }}</span>
             </div>
+
             <div class="form-group">
             <div class="col-md-12">
                 <label for="photo">{{ trans('cruds.product.fields.photo') }}</label>
@@ -89,6 +90,8 @@
                 <span class="help-block">{{ trans('cruds.product.fields.photo_helper') }}</span>
             </div>
             </div>
+
+
             <div class="form-group">
             
             <div class="col-md-12">
@@ -107,6 +110,7 @@
             <div class="form-group">
                 <input type="hidden" for="user_id" name="user_id" value="{{Auth::id()}}"/>
             </div>
+           
             <div class="form-group">
                 <label for="location_id">{{ trans('cruds.product.fields.location') }}</label>
                 <select class="form-control select2 {{ $errors->has('location') ? 'is-invalid' : '' }}" name="location_id" id="location_id">
@@ -120,6 +124,13 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.product.fields.location_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <input type="hidden" name="is_verified" value="0" />
+                    <input class="form-check-input" type="checkbox" name="is_verified" id="is_verified" value="0" />
+                    <label class="form-check-label" for="is_verified">{{ trans('cruds.product.fields.is_verified') }}</label>
+                </div> 
             </div>
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">

@@ -9,7 +9,8 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use \DateTimeInterface;
-
+use App\Models\Vote;
+use Auth;
 class Product extends Model implements HasMedia
 {
     use SoftDeletes, InteractsWithMedia, HasFactory;
@@ -93,17 +94,27 @@ class Product extends Model implements HasMedia
 
     public function votes()
     {
-        return $this->hasMany('App\Models\Vote');
+        return $this->hasMany(Vote::class);
     }
 
     public function upVotes()
     {
-        return $this->votes()->where('type', 'up')->count();
+        return $this->votes()->where('type', 'up');
     }
 
-    public function downVotes()
+    public function bookmarks()
     {
-        return $this->votes()->where('type', 'down')->count();
+        return $this->votes()->where('type', 'bookmark');
+    }
+
+
+    public function userLiked()
+    {
+        return $this->votes()->where([['user_id', Auth::id()],['type', 'up']]);
+    }
+    public function userbookmarked()
+    {
+        return $this->votes()->where([['user_id', Auth::id()],['type', 'bookmark']]);
     }
 
     public function voteCount()

@@ -30,7 +30,7 @@ Route::group(['prefix' => 'v1', 'name' => 'api.', 'namespace' => 'Api\V1\Admin',
     
     // Voting System
     Route::post('upvoteProduct', 'ProductApiController@upvoteProduct');
-
+    Route::post('vote', 'ProductApiController@vote');
     // Sub Categories
     Route::apiResource('sub-categories', 'SubCategoriesApiController');
     Route::get('sub-categories/getById/{category_id}', 'SubCategoriesController@getById')->name('admin.subcategories.byCatId');

@@ -134,6 +134,8 @@ return [
             'user_helper'        => ' ',
             'location'           => 'Location',
             'location_helper'    => ' ',
+            'is_verified'           => 'Verified News',
+            
         ],
     ],
     'mainCategory'      => [

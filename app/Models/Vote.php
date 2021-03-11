@@ -4,23 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Product;
 class Vote extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'type_id',
+        'type',
         'product_id',
         'user_id'
     ];
 
     public function product()
     {
-        return $this->belongsTo('App\Product');
-    }
-
-    public function voteType()
-    {
-        return $this->belongsTo('App\VoteTypes');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

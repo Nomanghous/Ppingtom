@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Http\Requests\GetNearbyNewsRequest;
 use App\Http\Requests\GetProductByTopic;
 use App\Http\Requests\UpvoteProductRequest;
+use App\Http\Requests\GetNearbyNewsWithDateRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Models\ProductTag;
@@ -18,6 +19,7 @@ use Gate;
 use DB;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 class ProductApiController extends Controller
 {
     use MediaUploadingTrait;
@@ -87,7 +89,7 @@ class ProductApiController extends Controller
         $query = Location::select(DB::raw('*, ( 6367 * acos( cos( radians(' . $request['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( logitude ) - radians(' . $request['logitude'] . ') ) + sin( radians(' . $request['latitude'] . ') ) * sin( radians( latitude ) ) ) ) AS distance'))
             ->having('distance', '<', $distance)
             ->orderBy('distance')->pluck('id');
-        $result = Product::with("category",'subcategories','user:id,name', 'location:id,address,city,country,latitude,logitude', 'votes:id,type_id')->whereIn('location_id', $query)->get();
+        $result = $this->getProductQuery($query, null);
         return response()->json(
             [
                 'status_code' => 200,
@@ -105,7 +107,7 @@ class ProductApiController extends Controller
         $query = Location::select(DB::raw('*, ( 6367 * acos( cos( radians(' . $request['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( logitude ) - radians(' . $request['logitude'] . ') ) + sin( radians(' . $request['latitude'] . ') ) * sin( radians( latitude ) ) ) ) AS distance'))
             ->having('distance', '<', $distance)
             ->orderBy('distance')->pluck('id');
-        $result = Product::with("category",'subcategories','user:id,name', 'location:id,address,city,country,latitude,logitude', 'votes:id,type_id')->whereIn('location_id', $query)->where('created_at',$request->date)->get();
+        $result = $this->getProductQuery($query, $request->date);
         return response()->json(
             [
                 'status_code' => 200,
@@ -117,6 +119,17 @@ class ProductApiController extends Controller
         );        
     }
 
+
+    private function getProductQuery($locationIds, $withDate){
+        if($withDate == null){
+           return Product::with('category','subcategories','user:id,name', 'location:id,address,city,country,latitude,logitude')->withCount('upVotes','bookmarks', 'userLiked','userBookmarked')->whereIn('location_id', $locationIds)->get();
+        }else{
+            return Product::with('category','subcategories','user:id,name', 'location:id,address,city,country,latitude,logitude')->withCount('upVotes','bookmarks', 'userLiked','userBookmarked')->whereIn('location_id', $locationIds)->whereDate('created_at',date($withDate))->get();
+        }
+        
+    }
+
+    
     public function fetchProductById(GetNearbyNewsRequest $request)
     {
         $result = Product::whereIn('location_id', $query)->get();
@@ -139,9 +152,9 @@ class ProductApiController extends Controller
         $result = response();
         if($query->isEmpty()){
             $query = Location::where('address','like','%'.$request->topic."%")->get("id");
-            $result = Product::with('category','subcategories','user:id,name', 'location:id,address,city,country,latitude,logitude', 'votes:id,type_id')->whereIn('location_id', $query)->get();
+            $result = $this->getProductQuery($query, null);
         }else{
-            $result = Product::with('category','subcategories','user:id,name', 'location:id,address,city,country,latitude,logitude', 'votes:id,type_id')->whereHas('tags', function($q) use($query) {
+            $result = Product::with('category','subcategories','user:id,name', 'location:id,address,city,country,latitude,logitude')->withCount('upVotes','bookmarks','userLiked','userBookmarked')->whereHas('tags', function($q) use($query) {
                 $q->whereIn('id', $query);
             })->get();
         }
@@ -157,11 +170,23 @@ class ProductApiController extends Controller
         );  
     }
     
+    public function vote(Request $request)
+    {
+        $result = Product::withCount('upVotes','bookmarks')->get();
+        return response()->json(
+            [
+                'status_code' => 200,
+                'message' => 'success',
+                'data' => $result
+            ]
+        );
+    }
+
     public function upvoteProduct(UpvoteProductRequest $request)
     {
-        $alreadyVoted = Vote::where([['user_id',$request->user_id], ['product_id', $request->product_id],['type_id', $request->type_id]])->first();
+        $alreadyVoted = Vote::where([['user_id',$request->user_id], ['product_id', $request->product_id],['type', $request->type]])->first();
         if($alreadyVoted){
-            Vote::where([['user_id',$request->user_id], ['product_id', $request->product_id],['type_id', $request->type_id]])->delete();
+            Vote::where([['user_id',$request->user_id], ['product_id', $request->product_id],['type', $request->type]])->delete();
         }else{
             $vote = Vote::create($request->all());
         }
@@ -174,5 +199,4 @@ class ProductApiController extends Controller
             ]
         );
     }
-    
 }

@@ -15,7 +15,7 @@ class CreateVotesTable extends Migration
     {
         Schema::create('votes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('type_id')->unsigned();
+            $table->enum('type', ['up', 'down', 'bookmark']);
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
@@ -24,7 +24,6 @@ class CreateVotesTable extends Migration
         Schema::table('votes', function(Blueprint $table) {
            $table->foreign('product_id')->references('id')->on('products');
            $table->foreign('user_id')->references('id')->on('users');
-           $table->foreign('type_id')->references('id')->on('vote_types');
         });
     }
 
