@@ -51,8 +51,8 @@
            
             <div class="form-group">
             
-            <label for="sub-categories">{{ trans('cruds.product.fields.category') }}</label>
-            <select class="form-control select2" name="subcategories[]" id="subcategory" multiple>
+            <label for="sub-categories">{{ trans('cruds.product.fields.sub-category') }}</label>
+            <select class="form-control select2" name="subcategories[]" id="subcategory" multiple required>
             <option value=""></option>
                 </select>
                 
@@ -110,12 +110,75 @@
             <div class="form-group">
                 <input type="hidden" for="user_id" name="user_id" value="{{Auth::id()}}"/>
             </div>
-           
             <div class="form-group">
+                <label for="autocomplete"> Location/City/Address </label>
+                <input type="text" name="autocomplete" id="autocomplete" class="form-control" placeholder="Select Location">
+            </div>
+            <div class="form-group d-none">
+                <label class="required" for="city">{{ trans('cruds.location.fields.city') }}</label>
+                <input class="form-control {{ $errors->has('city') ? 'is-invalid' : '' }}" type="text" name="city" id="city" value="{{ old('city', '') }}" required>
+                @if($errors->has('city'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('city') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.location.fields.city_helper') }}</span>
+            </div>
+            <div class="form-group d-none">
+                <label class="required" for="address">{{ trans('cruds.location.fields.address') }}</label>
+                <input class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" type="text" name="address" id="address" value="{{ old('address', '') }}" required>
+                @if($errors->has('address'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('address') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.location.fields.address_helper') }}</span>
+            </div>
+            <div class="form-group d-none">
+                <label class="required" for="country">{{ trans('cruds.location.fields.country') }}</label>
+                <input class="form-control {{ $errors->has('country') ? 'is-invalid' : '' }}" type="text" name="country" id="country" value="{{ old('country', '') }}" required>
+                @if($errors->has('country'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('country') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.location.fields.country_helper') }}</span>
+            </div>
+            <div class="form-group d-none">
+                <label for="zip_code">{{ trans('cruds.location.fields.zip_code') }}</label>
+                <input class="form-control {{ $errors->has('zip_code') ? 'is-invalid' : '' }}" type="text" name="zip_code" id="zip_code" value="{{ old('zip_code', '') }}">
+                @if($errors->has('zip_code'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('zip_code') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.location.fields.zip_code_helper') }}</span>
+            </div>
+            <div class="form-group d-none">
+                <label class="required" for="latitude">{{ trans('cruds.location.fields.latitude') }}</label>
+                <input class="form-control {{ $errors->has('latitude') ? 'is-invalid' : '' }}" type="number" name="latitude" id="latitude" value="{{ old('latitude', '') }}" step="0.000000001" required>
+                @if($errors->has('latitude'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('latitude') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.location.fields.latitude_helper') }}</span>
+            </div>
+            <div class="form-group d-none">
+                <label class="required" for="logitude">{{ trans('cruds.location.fields.logitude') }}</label>
+                <input class="form-control {{ $errors->has('logitude') ? 'is-invalid' : '' }}" type="number" name="logitude" id="logitude" value="{{ old('logitude', '') }}" step="0.000000001" required>
+                @if($errors->has('logitude'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('logitude') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.location.fields.logitude_helper') }}</span>
+            </div>
+            <!-- <div class="form-group">
                 <label for="location_id">{{ trans('cruds.product.fields.location') }}</label>
                 <select class="form-control select2 {{ $errors->has('location') ? 'is-invalid' : '' }}" name="location_id" id="location_id">
                     @foreach($locations as $id => $location)
-                        <option value="{{ $location->id }}" {{ old('location_id') == $id ? 'selected' : ( $location->isDefault ? 'selected' : '') }}>{{ $location->address }}</option>
+                        <option id="location_address" value="{{ $location->id }}" {{ old('location_id') == $id ? 'selected' : ( $location->isDefault ? 'selected' : '') }}>{{ $location->address }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('location'))
@@ -124,19 +187,34 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.product.fields.location_helper') }}</span>
+               
             </div>
+            </div> -->
+
+           
+           
+            <div class="form-group">
+                
+                <label class="form-check-label" for="news_date">{{ trans('cruds.product.fields.news_date') }}</label>
+                <input type="date" class="form-control" name="news_date" value="" required>
+                    
+                
+            </div>
+
             <div class="form-group">
                 <div class="form-check">
-                    <input type="hidden" name="is_verified" value="0" />
-                    <input class="form-check-input" type="checkbox" name="is_verified" id="is_verified" value="0" />
+                    <input class="form-check-input" type="checkbox" name="is_verified" id="is_verified" onclick="$(this).val(this.checked ? 1 : 0)" value="0" />
                     <label class="form-check-label" for="is_verified">{{ trans('cruds.product.fields.is_verified') }}</label>
                 </div> 
             </div>
+
+
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
                 </button>
             </div>
+            
        
     </div>
 </div>
@@ -145,19 +223,11 @@
 </form>
 
 
+
 @endsection
 
+
 @section('scripts')
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&key=" {{ env('GOOGLE_MAPS_API_KEY') }}></script>
-<script type="text/javascript">
-    google.maps.event.addDomListener(window, 'load', function () {
-        var places = new google.maps.places.Autocomplete(document.getElementById('txtPlaces'));
-        google.maps.event.addListener(places, 'place_changed', function () {
-
-        });
-    });
-</script>
-
 <script>
     $(document).ready(function () {
   function SimpleUploadAdapter(editor) {
@@ -346,4 +416,6 @@
      }
 }
 </script>
+@include('layouts.location_picker_scripts')
+
 @endsection

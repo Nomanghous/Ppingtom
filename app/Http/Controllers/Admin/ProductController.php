@@ -50,7 +50,9 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
-        $product = Product::create($request->all());
+        if($request->has('city')){
+            $location = Location::create($request->all());
+            $product = Product::create($request->all() + ['location_id' => $location->id]);
         $product->tags()->sync($request->input('tags', []));
         $product->subcategories()->sync($request->input('subcategories', []));
         if ($request->input('photo', false)) {
@@ -66,6 +68,8 @@ class ProductController extends Controller
         }
 
         return redirect()->route('admin.products.index');
+        }
+       
     }
 
     public function edit(Product $product)

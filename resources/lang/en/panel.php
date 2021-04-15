@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'News Locator',
+    'site_title' => 'PPingtom',
 ];

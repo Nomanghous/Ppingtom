@@ -12,6 +12,7 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->nullable();
             $table->longText('description')->nullable();
+            $table->timestamp('news_date')->useCurrent();
             $table->boolean('is_verified')->default(false);
             $table->unsignedBigInteger('location_id')->nullable();
             $table->timestamps();

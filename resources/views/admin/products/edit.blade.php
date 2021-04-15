@@ -1,6 +1,5 @@
 @extends('layouts.admin')
 @section('content')
-
 <div class="card">
     <div class="card-header">
         {{ trans('global.edit') }} {{ trans('cruds.product.title_singular') }}
@@ -51,7 +50,7 @@
             <div class="form-group">
             
             <label for="sub-categories">{{ trans('cruds.product.fields.subcategory') }}</label>
-            <select class="form-control select2" name="subcategories[]" id="subcategory" multiple>
+            <select class="form-control select2" name="subcategories[]" id="subcategory" multiple required>
                     @foreach($subcategories as $id => $subcategory)
                         <option value="{{ $id }}" {{ (in_array($id, old('categories', [])) || $product->subcategories->contains($id)) ? 'selected' : '' }}>{{ $subcategory }}</option>
                     @endforeach
@@ -118,9 +117,15 @@
                 <span class="help-block">{{ trans('cruds.product.fields.location_helper') }}</span>
             </div>
             <div class="form-group">
+                
+                <label class="form-check-label" for="news_date">{{ trans('cruds.product.fields.news_date') }}</label>
+                <input type="date" class="form-control" name="news_date" value="{{date_format($product->news_date,'Y-m-d')}}" required>
+                    
+                
+            </div>
+            <div class="form-group">
                 <div class="form-check">
-                    <input type="hidden" name="is_verified" value="0" />
-                    <input class="form-check-input" type="checkbox" name="is_verified" id="is_verified" value="0" {{$product->is_verified || old('is_verified',0) === 1 ? 'checked' : 'unchecked'}} />
+                    <input class="form-check-input" type="checkbox" name="is_verified" id="is_verified" onclick="$(this).val(this.checked ? 1 : 0)" value="{{$product->is_verified}}" {{$product->is_verified || old('is_verified',0) === 1 ? 'checked' : 'unchecked'}} />
                     <label class="form-check-label" for="is_verified">{{ trans('cruds.product.fields.is_verified') }}</label>
                 </div> 
             </div>

@@ -135,6 +135,8 @@ return [
             'location'           => 'Location',
             'location_helper'    => ' ',
             'is_verified'           => 'Verified News',
+            'news_date'           => 'Date of News',
+            'sub-category' => 'Sub Category'
             
         ],
     ],
@@ -181,7 +183,7 @@ return [
         'title_singular' => 'Category',
     ],
     'location'          => [
-        'title'          => 'Locations',
+        'title'          => 'Fixed Location',
         'title_singular' => 'Location',
         'fields'         => [
             'id'                => 'ID',
@@ -199,6 +201,8 @@ return [
             'logitude'          => 'Logitude',
             'isdefault'         => 'Default',
             'isdefault_helper'  => ' ',
+            'name'         => 'Name',
+            'name_helper'  => ' ',
             'logitude_helper'   => ' ',
             'created_at'        => 'Created at',
             'created_at_helper' => ' ',

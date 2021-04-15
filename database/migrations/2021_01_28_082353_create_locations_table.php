@@ -15,12 +15,13 @@ class CreateLocationsTable extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('city');
+            $table->string('city')->nullable();
             $table->string('address');
-            $table->string('country');
+            $table->string('country')->nullable();
             $table->string('zip_code')->nullable();
             $table->float('latitude', 12, 9);
             $table->float('logitude', 12, 9);
+
             $table->timestamps();
             $table->softDeletes();
         });

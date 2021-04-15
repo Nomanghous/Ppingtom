@@ -81,14 +81,14 @@
       }
     },
     init: function () {
-@if(isset($productCategory) && $productCategory->photo)
-      var file = {!! json_encode($productCategory->photo) !!}
-          this.options.addedfile.call(this, file)
-      this.options.thumbnail.call(this, file, file.preview)
-      file.previewElement.classList.add('dz-complete')
-      $('form').append('<input type="hidden" name="photo" value="' + file.file_name + '">')
-      this.options.maxFiles = this.options.maxFiles - 1
-@endif
+        @if(isset($productCategory) && $productCategory->photo)
+            var file = {!! json_encode($productCategory->photo) !!}
+                this.options.addedfile.call(this, file)
+            this.options.thumbnail.call(this, file, file.preview)
+            file.previewElement.classList.add('dz-complete')
+            $('form').append('<input type="hidden" name="photo" value="' + file.file_name + '">')
+            this.options.maxFiles = this.options.maxFiles - 1
+        @endif
     },
     error: function (file, response) {
         if ($.type(response) === 'string') {

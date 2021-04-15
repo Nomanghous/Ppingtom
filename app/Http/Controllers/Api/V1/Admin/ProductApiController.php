@@ -85,6 +85,7 @@ class ProductApiController extends Controller
     }
     public function fetchNearbyProducts(GetNearbyNewsRequest $request)
     {
+        abort_if(Gate::denies('product_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $distance = env('NEARBY_NEWS_DISTANCE');
         $query = Location::select(DB::raw('*, ( 6367 * acos( cos( radians(' . $request['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( logitude ) - radians(' . $request['logitude'] . ') ) + sin( radians(' . $request['latitude'] . ') ) * sin( radians( latitude ) ) ) ) AS distance'))
             ->having('distance', '<', $distance)
@@ -124,12 +125,10 @@ class ProductApiController extends Controller
         if($withDate == null){
            return Product::with('category','subcategories','user:id,name', 'location:id,address,city,country,latitude,logitude')->withCount('upVotes','bookmarks', 'userLiked','userBookmarked')->whereIn('location_id', $locationIds)->get();
         }else{
-            return Product::with('category','subcategories','user:id,name', 'location:id,address,city,country,latitude,logitude')->withCount('upVotes','bookmarks', 'userLiked','userBookmarked')->whereIn('location_id', $locationIds)->whereDate('created_at',date($withDate))->get();
-        }
-        
+            return Product::with('category','subcategories','user:id,name', 'location:id,address,city,country,latitude,logitude')->withCount('upVotes','bookmarks', 'userLiked','userBookmarked')->whereIn('location_id', $locationIds)->whereDate('news_date',date($withDate))->get();
+        }  
     }
 
-    
     public function fetchProductById(GetNearbyNewsRequest $request)
     {
         $result = Product::whereIn('location_id', $query)->get();
@@ -142,8 +141,6 @@ class ProductApiController extends Controller
                 ]
             ]
         );
-        
-        
     }
     public function fetchProductByTopic(GetProductByTopic $request)
     {
@@ -184,6 +181,7 @@ class ProductApiController extends Controller
 
     public function upvoteProduct(UpvoteProductRequest $request)
     {
+
         $alreadyVoted = Vote::where([['user_id',$request->user_id], ['product_id', $request->product_id],['type', $request->type]])->first();
         if($alreadyVoted){
             Vote::where([['user_id',$request->user_id], ['product_id', $request->product_id],['type', $request->type]])->delete();

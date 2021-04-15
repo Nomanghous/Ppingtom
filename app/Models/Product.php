@@ -23,6 +23,7 @@ class Product extends Model implements HasMedia
     ];
 
     protected $dates = [
+        'news_date',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -33,6 +34,8 @@ class Product extends Model implements HasMedia
         'description',
         'location_id',
         'user_id',
+        'is_verified',
+        'news_date',
         'created_at',
         'updated_at',
         'deleted_at',

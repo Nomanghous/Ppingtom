@@ -26,6 +26,8 @@ class Location extends Model
         'zip_code',
         'latitude',
         'logitude',
+        'name',
+        'photo',
         'isDefault',
         'created_at',
         'updated_at',
